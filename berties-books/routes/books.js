@@ -46,6 +46,19 @@ router.post('/bookadded', function (req, res, next) {
     });
 });
 
+// LIST all books priced under £20
+router.get('/bargainbooks', function(req, res, next) {
+
+    let sqlquery = "SELECT * FROM books WHERE price < 20";
+
+    db.query(sqlquery, (err, result) => {
+        if (err) {
+            next(err);
+        } else {
+            res.render("bargainbooks.ejs", { cheapBooks: result });
+        }
+    });
+});
 
 
 

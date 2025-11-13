@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bargain Books</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #0080c9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bargain Books (Under £20)</h1>
+
+    <ul>
+        <% cheapBooks.forEach(function(book) { %>
+            <li><%= book.name %> — £<%= Number(book.price).toFixed(2) %></li>
+        <% }) %>
+    </ul>
+
+</body>
+</html>

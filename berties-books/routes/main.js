@@ -15,6 +15,10 @@ router.get('/books/addbook',function(req, res, next){
     res.render('addbook.ejs')
 });
 
+router.get('/books/bargainbooks;',function(req, res, next){
+    res.render('bargainbooks.ejs')
+});
+
 
 // Export the router object so index.js can access it
 module.exports = router
