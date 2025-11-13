@@ -11,6 +11,7 @@ router.get('/search-result', function (req, res, next) {
     res.send("You searched for: " + req.query.keyword)
 });
 
+// This route displays the list of all books (GET)
 router.get('/list', function(req, res, next) {
         let sqlquery = "SELECT * FROM books"; // query database to get all the books
         // execute sql query
@@ -18,9 +19,32 @@ router.get('/list', function(req, res, next) {
             if (err) {
                 next(err)
             }
-            res.send(result)
+            res.render("list.ejs", {availableBooks:result})
          });
     });
+
+// This route displays the form to add a new book (GET)
+router.get('/addbook', function(req, res) {
+    res.render('addbook.ejs');
+});
+
+
+// The form submits to this route (POST)
+router.post('/bookadded', function (req, res, next) {
+    let sqlquery = "INSERT INTO books (name, price) VALUES (?,?)";
+    let newrecord = [req.body.name, req.body.price];
+
+    db.query(sqlquery, newrecord, (err, result) => {
+        if (err) {
+            next(err);
+        } else {
+            res.send(
+                'This book is added to database, name: ' +
+                req.body.name + ' price ' + req.body.price
+            );
+        }
+    });
+});
 
 
 

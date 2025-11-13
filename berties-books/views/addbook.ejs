@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bertie's Books: Add book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #0080c9;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"] {
+            padding: 5px;
+            width: 200px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bertie's Books: Add book</h1>
+
+    <form action="/books/bookadded" method="POST">
+
+        <label for="name">Book name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price" step="0.01" required><br><br>
+
+        <button type="submit">Add Book</button>
+    </form>
+
+</body>
+</html>
