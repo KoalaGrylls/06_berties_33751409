@@ -152,7 +152,6 @@ router.get('/audit', function (req, res, next) {
                 <td>${row.username}</td>
                 <td>${row.login_time}</td>
                 <td>${row.success ? "✔ Success" : "❌ Failed"}</td>
-                <td>${row.ip_address}</td>
             </tr>`;
         });
 
