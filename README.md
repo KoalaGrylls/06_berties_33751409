@@ -35,6 +35,23 @@ Updated the database connection to use process.env instead of hard-coded values.
 
 Added .env to .gitignore so it is not uploaded to GitHub.
 
+**Login Attempt Database**
+
+To record successful and unsuccessful login attempts, I created a new table called login_audit in MySQL. This table stores the username, the time of the login attempt, whether it succeeded, and the user’s IP address.
+
+I created the table on the VM using:
+
+CREATE TABLE login_audit (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50),
+    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    success BOOLEAN,
+    ip_address VARCHAR(50)
+);
+
+
+In my login route, I added a small piece of code that inserts a row into this table every time someone tries to log in. This allowed me to keep a full audit log of all login activity.
+
 
 **Fixing the "Access denied" Database Error**
 
