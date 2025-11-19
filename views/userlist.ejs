@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bertie's Books Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #0080c9;
+        }
+        h2 {
+            color: #0a6fa6;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bertie's Books Shop</h1>
+    <h2>Here are all our users</h2>
+
+    <ul>
+        <% users.forEach(function(user) { %>
+            <li><%= user.firstName %> <%= user.lastName %> (Username: <%= user.username %>, Email: <%= user.email %>)</li>
+        <% }) %>
+    </ul>
+
+</body>
+</html>
