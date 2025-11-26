@@ -7,5 +7,5 @@ INSERT INTO books (name, price)VALUES('Brighton Rock', 20.25),('Brave New World'
 
 USE berties_books;
 
-INSERT INTO users (username, firstName, lastName, email, hashedPassword) VALUES ('gold', 'Gold', 'User', 'gold@example.com', '$2b$10$w0UqC0V7uXo7Q0uEF2eIeOiHUB8N5BBJc0yHBT2tZaEj9S19l9c2K');
+INSERT INTO users (username, firstName, lastName, email, hashedPassword) VALUES ('gold', 'Gold', 'User', 'gold@example.com', '$2a$10$RA4Tv1bXLes4fvS21vPO...vycJcpKPEUrmkHgr9LwWRZfomHFjIa');
 

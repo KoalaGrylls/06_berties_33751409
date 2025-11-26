@@ -1,82 +1,83 @@
-**Bertie’s Books**
+# Bertie’s Books – Coursework
 
-This project is based on the initial Bertie’s Books starter code.
+This project extends the original Bertie’s Books application by adding security features such as validation, sanitisation, password hashing, session protection, and secure deployment on the university VM.
 
-**Setup**
-git clone https://github.com/KoalaGrylls/06_berties_33751409
-cd 06_berties_33751409/berties-books
-npm install
-npm start
+## Setup Instructions
 
-**Usage**
+1. Clone the repository  
+2. Install dependencies with `npm install`  
+3. Start the application using `npm start`   
 
-Open http://localhost:8000 in your browser.
+The app uses MySQL for data storage and EJS for server-side rendering.
 
-**Tech**
+## Technologies Used
 
-Node.js, Express, EJS, JavaScript, CSS, MySQL 
+- Node.js  
+- Express  
+- EJS  
+- MySQL  
+- express-validator  
+- express-sanitizer  
+- bcrypt  
+- express-session  
+- dotenv  
+- forever (for VM deployment)
 
-**Dotenv**
+## Environment Variables (.env)
 
-I used the dotenv module to keep my database login details secure.
+I used dotenv so database credentials are not stored in the code.
 
-Installed dotenv:
+On the VM, I manually created:
 
-npm install dotenv
-
-Created a .env file and stored my database settings inside it.
-
-Added this line at the top of index.js to load the values:
-
-require('dotenv').config();
-
-
-Updated the database connection to use process.env instead of hard-coded values.
-
-Added .env to .gitignore so it is not uploaded to GitHub.
-
-**Login Attempt Database**
-
-To record successful and unsuccessful login attempts, I created a new table called login_audit in MySQL. This table stores the username, the time of the login attempt, whether it succeeded, and the user’s IP address.
-
-I created the table on the VM using:
-
-CREATE TABLE login_audit (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50),
-    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    success BOOLEAN,
-    ip_address VARCHAR(50)
-);
-
-
-In my login route, I added a small piece of code that inserts a row into this table every time someone tries to log in. This allowed me to keep a full audit log of all login activity.
-
-
-**Fixing the "Access denied" Database Error**
-
-When I first tested my project on the VM, I got the MySQL error:
-
-Access denied for user ''@'localhost' (using password: NO)
-
-This happened because the VM did not have a .env file, so the database username and password were empty. Without valid credentials, MySQL refused the connection.
-
-I think this was because i added .env to .gitignore
-
-How I fixed it
-
-I used nano on the VM to create a new .env file:
-
-nano .env
-
-Inside the file, I added my database environment variables:
-
+BB_HOST=
 BB_USER=
 BB_PASSWORD=
-BB_DATABASE=
+BB_DATABASE= 
 
-I saved the file in nano.
+## Validation (express-validator)
 
-Then I restarted my Node.js app so it could load the updated .env file.
+Validation added to the registration form:
 
-After doing this, the database connection worked correctly.
+- Email must be valid  
+- Username 5–20 characters  
+- Password minimum 8 characters  
+
+Invalid input returns the user to the registration page with errors.
+
+## Sanitisation (express-sanitizer)
+
+Before sanitisation, the form was vulnerable to XSS. After adding req.sanitize(), fields such as first name, last name, username, and email are cleaned to remove malicious HTML.
+
+## Password Hashing (bcrypt)
+
+Passwords are hashed before being stored. bcrypt.compare is used during login.
+
+## Session Management
+
+Protected pages require login. If a user is not logged in, they are redirected to the login page.
+
+## Login Attempt Logging
+
+A login_audit table stores username, success flag, timestamp, and IP address for every login attempt.
+
+## SQL Injection Protection
+
+All queries use parameterised SQL to prevent injection. 
+
+## Deployment to VM
+
+The app is run using:
+
+forever start index.js
+
+so it stays active for marking.
+
+## Summary
+
+- Validation added  
+- Sanitisation added  
+- Password hashing  
+- Session protection  
+- Login auditing  
+- SQL injection protection  
+- Works on VM with forever
