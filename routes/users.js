@@ -120,7 +120,8 @@ router.post('/loggedin', function (req, res, next) {
                 );
 
                 // Go to home page
-                return res.redirect('/');
+                return res.redirect('../');
+
             }
 
             // Password incorrect
@@ -173,9 +174,9 @@ router.get('/audit', redirectLogin, function (req, res, next) {
 router.get('/logout', redirectLogin, (req,res) => {
     req.session.destroy(err => {
         if (err) {
-            return res.redirect('./')
+            return res.redirect('../');
         }
-        res.send('You are now logged out. <a href="/">Home</a>');
+        res.send('You are now logged out. <a href="../">Home</a>');
 
     });
 });
