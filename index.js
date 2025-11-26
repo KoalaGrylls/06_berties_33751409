@@ -5,6 +5,8 @@ var ejs = require('ejs')
 var mysql = require('mysql2');
 const path = require('path')
 var session = require('express-session');
+const { check, validationResult } = require('express-validator');
+const expressSanitizer = require('express-sanitizer');
 
 // Define the database connection pool
 const db = mysql.createPool({
@@ -43,6 +45,9 @@ app.use(express.urlencoded({ extended: true }))
 
 // Set up public folder (for css and static js)
 app.use(express.static(path.join(__dirname, 'public')))
+
+// Set up express-sanitizer
+app.use(expressSanitizer());
 
 // Define our application-specific data
 app.locals.shopData = {shopName: "Bertie's Books"}

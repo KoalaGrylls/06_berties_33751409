@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const {check, validationResult} = require('express-validator');
 
 // Middleware to protect routes
 const redirectLogin = (req, res, next) => {
@@ -19,44 +20,92 @@ router.get('/register', function (req, res, next) {
 });
 
 // POST /registered
-router.post('/registered', function (req, res, next) {
+router.post(
+    '/registered',
 
-    const first = req.body.first;
-    const last = req.body.last;
-    const email = req.body.email;
-    const username = req.body.username;
-    const plainPassword = req.body.password; // must stay inside the route for security reasons
+    // express-validator checks
+    [
+        check('email')
+            .isEmail()
+            .withMessage('Invalid email address')
+            .notEmpty()
+            .withMessage('Email is required')
+            .normalizeEmail(),
+        check('username')
+            .notEmpty()
+            .withMessage('Username is required')
+            .isLength({ min: 5, max: 20 })
+            .withMessage('Username must be 5–20 characters long')
+            .matches(/^[A-Za-z0-9_]+$/)
+            .withMessage('Username must contain only letters, numbers, and underscores'),
+        check('password')
+            .notEmpty()
+            .withMessage('Password is required')
+            .isLength({ min: 8 })
+            .withMessage('Password must be at least 8 characters long')
+            .matches(/[a-z]/)
+            .withMessage('Password must contain at least one lowercase letter')
+            .matches(/[A-Z]/)
+            .withMessage('Password must contain at least one uppercase letter')
+            .matches(/[0-9]/)
+            .withMessage('Password must contain at least one number'),
+        check('first')
+            .notEmpty()
+            .withMessage('First name is required'),
+        check('last')
+            .notEmpty()
+            .withMessage('Last name is required')
+    ],
 
-    // Hash the password before saving it
-    bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
-        if (err) {
-            console.error("Error hashing password:", err);
-            return res.status(500).send("Server error hashing password");
+    function (req, res, next) {
+
+        // Validate the form
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            // ❌ Validation failed → reload register page and SHOW errors
+            return res.render('register', { 
+                errors: errors.array()
+            });
         }
 
-        // Insert into MySQL
-        const sql = `
-            INSERT INTO users (username, firstName, lastName, email, hashedPassword) 
-            VALUES (?, ?, ?, ?, ?)
-        `;
+        // If validation succeeded → continue with registration
+        const first = req.sanitize(req.body.first);
+        const last = req.sanitize(req.body.last);
+        const email = req.sanitize(req.body.email);
+        const username = req.sanitize(req.body.username);
+        const plainPassword = req.sanitize(req.body.password);
 
-        db.query(sql, [username, first, last, email, hashedPassword], function(err, result) {
+        // Hash the password
+        bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
             if (err) {
-                console.error("Database error:", err);
-                return res.status(500).send("Server error saving user");
+                console.error("Error hashing password:", err);
+                return res.status(500).send("Server error hashing password");
             }
 
-             // Build the result string
-            let output = 'Hello ' + first + ' ' + last + ', you are now registered! ';
-            output += 'We will send an email to you at ' + email + '.<br><br>';
-            output += 'Your password is: ' + plainPassword + '<br>';
-            output += 'Your hashed password is: ' + hashedPassword;
+            // Insert into database
+            const sql = `
+                INSERT INTO users (username, firstName, lastName, email, hashedPassword) 
+                VALUES (?, ?, ?, ?, ?)
+            `;
 
-            // Success message
-            res.send(output);
+            db.query(sql, [username, first, last, email, hashedPassword], function(err, result) {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).send("Server error saving user");
+                }
+
+                // Success message
+                let output = `Hello ${first} ${last}, you are now registered! `;
+                output += `We will send an email to ${email}.<br><br>`;
+                output += `Your password has been securely hashed and stored.<br><br>`;
+
+                res.send(output);
+            });
         });
-    });
-});
+    }
+);
+
 
 
 // List all users (for testing purposes)
@@ -79,8 +128,8 @@ router.get('/login', function (req, res, next) {
 // POST /loggedin
 router.post('/loggedin', function (req, res, next) {
 
-    const username = req.body.username;
-    const plainPassword = req.body.password;
+    const username = req.sanitize(req.body.username);
+    const plainPassword = req.sanitize(req.body.password);
 
     const sql = `SELECT hashedPassword FROM users WHERE username = ?`;
 
