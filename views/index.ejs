@@ -2,9 +2,20 @@
 <html>
   <head>
     <title>Welcome to <%=shopData.shopName%></title>
-    <link rel="stylesheet"  type="text/css" href="/main.css" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
   </head>
+
   <body>
+
+    <!-- TOP RIGHT LOGIN/LOGOUT BUTTON -->
+    <div class="auth-links">
+      <% if (session && session.userId) { %>
+          <a href="/users/logout" class="auth-link red">Logout</a>
+      <% } else { %>
+          <a href="/users/login" class="auth-link blue">Login</a>
+      <% } %>
+    </div>
+
     <h1>Welcome to <%=shopData.shopName%></h1>
     <p><a href="about">About <%=shopData.shopName%></a></p>
     <p><a href="books/search">Search for books</a></p>
@@ -12,8 +23,8 @@
     <p><a href="books/addbook">Add a new book</a></p>
     <p><a href="books/list">See our book list</a></p>
     <p><a href="users/list">See our user list</a></p>
-    <p><a href="users/login">Login</a></p>
     <p><a href="users/audit">View login audit log</a></p>
-    
+
   </body>
 </html>
+

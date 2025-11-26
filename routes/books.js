@@ -2,6 +2,16 @@
 const express = require("express")
 const router = express.Router()
 
+// Middleware to protect routes
+const redirectLogin = (req, res, next) => {
+    if (!req.session.userId ) {
+      res.redirect('/users/login') // redirect to the login page
+    } else { 
+        next (); // move to the next middleware function
+    } 
+}
+
+
 router.get('/search',function(req, res, next){
     res.render("search.ejs")
 });
@@ -12,7 +22,7 @@ router.get('/search-result', function (req, res, next) {
 });
 
 // This route displays the list of all books (GET)
-router.get('/list', function(req, res, next) {
+router.get('/list', redirectLogin, function(req, res, next) {
         let sqlquery = "SELECT * FROM books"; // query database to get all the books
         // execute sql query
         db.query(sqlquery, (err, result) => {
@@ -24,13 +34,13 @@ router.get('/list', function(req, res, next) {
     });
 
 // This route displays the form to add a new book (GET)
-router.get('/addbook', function(req, res) {
-    res.render('addbook.ejs');
+router.get('/addbook', redirectLogin,  function(req, res) {
+    res.render('addbook.ejs', { session: req.session });
 });
 
 
 // The form submits to this route (POST)
-router.post('/bookadded', function (req, res, next) {
+router.post('/bookadded', redirectLogin, function (req, res, next) {
     let sqlquery = "INSERT INTO books (name, price) VALUES (?,?)";
     let newrecord = [req.body.name, req.body.price];
 

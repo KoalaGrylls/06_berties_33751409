@@ -4,14 +4,14 @@ const router = express.Router()
 
 // Handle our routes
 router.get('/',function(req, res, next){
-    res.render('index.ejs')
+    res.render("index", { session: req.session });
 });
 
 router.get('/about',function(req, res, next){
     res.render('about.ejs')
 });
 
-router.get('/books/addbook',function(req, res, next){
+router.get('/books/addbook', function(req, res, next){
     res.render('addbook.ejs')
 });
 

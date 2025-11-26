@@ -41,3 +41,48 @@ a:link {
     text-decoration: none;
     padding:5px;
   }
+
+/* Position top-right */
+.auth-links {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Shared link styling */
+.auth-link {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.1em;
+    margin-left: 10px;
+}
+
+/* Each colour */
+.red {
+    color: red;
+}
+
+.blue {
+    color: blue;
+}
+
+/* Optional hover effect */
+.auth-link:hover {
+    opacity: 0.7;
+}
+
+/* Force colours for login/logout links */
+.auth-link.red {
+    color: red !important;
+}
+
+.auth-link.blue {
+    color: blue !important;
+}
+
+.auth-link.red:hover,
+.auth-link.blue:hover {
+    color: white !important;
+    background-color: orangered; /* keeps your hover style */
+}
+
