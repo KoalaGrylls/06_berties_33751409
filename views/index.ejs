@@ -17,9 +17,15 @@
     </div>
 
     <h1><a href="/">Welcome to <%= shopData.shopName %></a></h1>
+
+    <% if (session && session.userId) { %>
+       <p class="auth-link blue" >Hello, <%= session.userId %>!</p>
+    <% } else { %>
+       <p><a href="users/register">Register with us</a></p>
+    <% } %>
+
     <p><a href="about">About <%=shopData.shopName%></a></p>
     <p><a href="books/search">Search for books</a></p>
-    <p><a href="users/register">Register with us</a></p>
     <p><a href="books/addbook">Add a new book</a></p>
     <p><a href="books/list">See our book list</a></p>
     <p><a href="users/list">See our user list</a></p>
