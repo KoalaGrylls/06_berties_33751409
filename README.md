@@ -5,8 +5,9 @@ This project extends the original Bertie’s Books application by adding securit
 ## Setup Instructions
 
 1. Clone the repository  
-2. Install dependencies with `npm install`  
-3. Start the application using `npm start`   
+2. Install dependencies with `npm install`
+3. Run `node index.js` to run local
+4. Use links.txt Homepage  
 
 The app uses MySQL for data storage and EJS for server-side rendering.
 
