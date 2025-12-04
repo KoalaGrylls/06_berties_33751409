@@ -61,6 +61,10 @@ app.use('/users', usersRoutes)
 const booksRoutes = require('./routes/books')
 app.use('/books', booksRoutes)
 
+// Load the route handlers for /api
+const apiRoutes =  require('./routes/api')
+app.use('/api', apiRoutes)
+
 // Load the route handlers (Had a problem where if this was loaded first, the /books/addbook route would still be able to be accessed without login)
 const mainRoutes = require("./routes/main")
 app.use('/', mainRoutes)

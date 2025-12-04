@@ -73,6 +73,43 @@ forever start index.js
 
 so it stays active for marking.
 
+
+## API Documentation
+
+This project includes a simple REST API that returns book data in JSON format. The API supports searching, price filtering, and sorting.
+
+### Get all books
+Returns a list of all books.
+
+GET /api/books
+
+Example:
+http://localhost:8000/api/books
+
+### Search books by name
+Use the `search` parameter to find books whose title contains the given word.
+
+GET /api/books?search=world
+
+### Filter books by price range
+Use `minprice` and `max_price` to return books within a price range.
+
+GET /api/books?minprice=5&max_price=10
+
+### Sort books
+Use the `sort` parameter to sort the results.
+
+Sort by name:
+GET /api/books?sort=name
+
+Sort by price:
+GET /api/books?sort=price
+
+### Combined example
+You can combine any of the parameters:
+
+GET /api/books?search=new&minprice=10&max_price=30&sort=price
+
 ## Summary
 
 - Validation added  
