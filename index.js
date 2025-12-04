@@ -7,6 +7,7 @@ const path = require('path')
 var session = require('express-session');
 const { check, validationResult } = require('express-validator');
 const expressSanitizer = require('express-sanitizer');
+const request = require('request')
 
 // Define the database connection pool
 const db = mysql.createPool({
